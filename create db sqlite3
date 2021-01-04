@@ -1,0 +1,125 @@
+import sqlite3
+
+connection = sqlite3.connect("webshop.db")
+cursor = connection.cursor()
+
+# Create table - CATEGORIES
+categories = """CREATE TABLE categories (
+                id INTEGER PRIMARY KEY,
+                name TEXT NOT NULL
+               )"""
+
+
+# Create table - clients
+clients = """CREATE TABLE clients (
+             Id INTEGER PRIMARY KEY,
+             First_name TEXT NOT NULL,
+             infix TEXT,
+             Last_name TEXT NOT NULL,
+             Street TEXT NOT NULL,
+             House_number TEXT NOT NULL,
+             Addition TEXT,
+             Zipcode TEXT NOT NULL,
+             City TEXT NOT NULL,
+             Country TEXT NOT NULL,
+             Email TEXT NOT NULL,
+             Password TEXT NOT NULL,
+             Newsletter TEXT NOT NULL,
+             FOREIGN KEY (id) REFERENCES clients (id) 
+             )"""
+
+
+# Create table - clients removed
+clients_remove = """CREATE TABLE clients_remove (
+             Id INTEGER PRIMARY KEY,
+             First_name TEXT NOT NULL,
+             infix TEXT,
+             Last_name TEXT NOT NULL,
+             Street TEXT NOT NULL,
+             House_number TEXT NOT NULL,
+             Addition TEXT,
+             Zipcode TEXT NOT NULL,
+             City TEXT NOT NULL,
+             Country TEXT NOT NULL,
+             Email TEXT NOT NULL,
+             Password TEXT NOT NULL,
+             Newsletter TEXT NOT NULL,
+             FOREIGN KEY (id) REFERENCES clients (id) 
+             )"""
+
+
+# Create table - PRODUCTS
+products = """CREATE TABLE products (
+                'id' INTEGER PRIMARY KEY,
+                'code' TEXT,
+                'title' TEXT NOT NULL,
+                'description' TEXT NOT NULL,
+                'price ex. tax in eurocent'  FLOAT NOT NULL,
+                'category' TEXT NOT NULL,
+                'stock' INTEGER NOT NULL,
+                FOREIGN KEY (category) REFERENCES categories(id)
+             )"""
+
+
+# Create table - PRODUCTS Reomved
+products_remove = """CREATE TABLE products_remove (
+                'removed_id' INTEGER PRIMARY KEY,
+                'code' TEXT,
+                'title' TEXT NOT NULL,
+                'description' TEXT NOT NULL,
+                'price ex. tax in eurocent'  FLOAT NOT NULL,
+                'category' TEXT NOT NULL,
+                'stock' INTEGER NOT NULL,
+                FOREIGN KEY (category) REFERENCES categories(id)
+             )"""
+
+# Create table - ORDER_LINE
+order_line = """CREATE TABLE order_line (
+             order_line_id INTEGER PRIMARY KEY,
+             ArtikelID INTEGER,
+             order_id INTEGER,
+             total_price FLOAT,
+             amount FLOAT,
+             FOREIGN KEY (order_id) REFERENCES orders (order_id),
+             FOREIGN KEY (id) REFERENCES products (id) )
+             )"""
+
+# Create table - ORDER
+order = """CREATE TABLE order (
+             order_id INTEGER PRIMARY KEY,
+             date TEXT NOT NULL,
+             paid BIT,
+             client_id TEXT NOT NULL,
+            FOREIGN KEY (client_id) REFERENCES clients (client_id) 
+            )"""
+
+
+# Create table - USER_ROLE
+user_role = """CREATE TABLE user_role (
+             user_id INTEGER PRIMARY KEY,
+             name TEXT NOT NULL
+             )"""
+
+# Create table - COUNTRY
+country = """CREATE TABLE country (
+            id INTEGER PRIMARY KEY,
+            name TEXT NOT NULL
+            )"""
+
+# Create table - sqlite_seuence
+sqlite_sequence = """CREATE TABLE sqlite_sequence (
+            name,
+            seq
+            )"""
+
+
+cursor.execute(products)
+cursor.execute(categories)
+cursor.execute(clients)
+cursor.execute(country)
+cursor.execute(clients_remove)
+cursor.execute(products_remove)
+cursor.execute(sqlite_sequence)
+print("Table has been made!")
+connection.commit()
+connection.close()
