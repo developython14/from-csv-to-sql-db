@@ -6,8 +6,7 @@ base = sqlite3.connect("webshop.db")
 cursor = base.cursor()
 
 #get the data from soutce file excel 
-data = pd.read_excel(r'/home/toma/Downloads/data.xlsx')
-
+data = pd.read_excel(r'/home/toka/Desktop/bed shop/data_base/bedshop-export-nov-2020(1).xlsx')
 
 def add_clients(data):
     """ add clients to the db from xlsx file."""
@@ -29,16 +28,17 @@ def add_clients(data):
       x11=data['Wachtwoord'][i]
       x12=data['Ingeschreven voor nieuwsbrief'][i]
       x=[x0,x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12]
+      e="'{x}'"
+      z=[e.format(x=i) for i in x]
       insert="INSERT OR REPLACE INTO clients (ID,'First_name', 'infix', 'Last_name', 'Street', 'House_number','Addition', 'Zipcode', 'City', 'Country', 'Email', 'Password' , 'newsletter') \
       VALUES"
       s='('
-      for i in range(len(x)):
-          s=s+str(x[i])+','
+      for i in range(len(z)):
+          s=s+z[i]+','
       s=s[:-1]+')'   
       io=str(insert)+s
       cursor.execute(io)
-      cursor.commit()
-      print(io)
+      base.commit()
     base.close()
 #add_the_clients_to_db
 add_clients(data) 
